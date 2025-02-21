@@ -3,18 +3,56 @@
 <h1>sign up</h1>
 
 <div class="register">
-    <input type="text" placeholder="name">
-    <input type="text" placeholder="email">
-    <input type="password" placeholder="password">
-    <button>Sign Up</button>
+    <input type="text" v-model="name" placeholder="name">
+    <input type="text" v-model="email" placeholder="email">
+    <input type="password" v-model="passworde" placeholder="password">
+    <button v-on:click="sigUp">Sign Up</button>
+    <p> <router-link to="/login">login</router-link> </p>
 </div>
 
 
 </template>
 
 <script>
+import axios  from 'axios';
+
 export default {
-    name : 'signUp'
+    name : 'signUp',
+    data(){
+        return {
+            name : '',
+            email: '',
+            passworde: ''
+        }
+    },
+    methods:{
+         async sigUp(){
+            // console.warn("signup method" , this.name,this.email,this.passworde);
+ 
+            let result =  await axios.post('http://localhost:3000/user' ,  {
+                'name':this.name,
+                'email': this.email,
+                'password':this.passworde     
+            });
+
+            console.warn(result);
+
+            if(result.status===201){
+                alert("sign up successfully");
+                localStorage.setItem("user-info",JSON.stringify(result.data));
+                this.$router.push({name : 'HomePage'});
+            }
+
+
+        }
+    },
+    mounted(){
+        // this function is to check the user is login or not
+        let user = localStorage.getItem('user-info');
+        if(user){
+            this.$router.push({name : 'HomePage'});
+        }
+    }
 }
 
 </script>
