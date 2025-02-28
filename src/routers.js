@@ -26,7 +26,7 @@ const routes = [
 {
     name : "UpdatePage",
     component : update,
-    path : "/update"
+    path : "/update/:id"
 },
 {
     name : "AddPage",
